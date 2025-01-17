@@ -1,11 +1,11 @@
 import './App.css'
-import {Cube} from './Cube.jsx'
+import Scene from './Scene.jsx'
 
 function App() {
 
   return (
     <>
-    <Cube/>
+    <Scene />
     </>
   )
 }
