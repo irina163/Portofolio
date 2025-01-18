@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'my-portfolio/**'
+      - 'my-portofolio/**'
 
 jobs:
   deploy:
@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install dependencies
-        working-directory: my-portfolio
+        working-directory: my-portofolio
         run: npm install
 
       # Will add for running tests
@@ -23,10 +23,10 @@ jobs:
       #   run: npm test
 
       - name: Build project
-        working-directory: my-portfolio
+        working-directory: my-portofolio
         run: npm run build
 
       - name: Deploy to Vercel
         # if: success()
-        working-directory: my-portfolio
+        working-directory: my-portofolio
         run: npx vercel --token=${{ secrets.VERCEL_TOKEN }} --prod
