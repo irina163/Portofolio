@@ -19,19 +19,21 @@ const Cube = React.forwardRef((props, ref) => {
     )
 })
 
-function RotatingCube(props){
+function RotatingShape(props){
     const ref = useRef()
 
     useFrame ((state, delta) =>{
         if (ref.current) {
-            ref.current.rotation.x += delta
+            ref.current.rotation.x += 2* delta
         }
     })
 
     return(
+
         <Cube {...props} ref = {ref}/>
     )
 }
+
 
 function Sphere(props){
     const {position, size, color} = props
@@ -51,9 +53,9 @@ export default function Scene(){
         <Canvas>
             <group>
                 <RotatingCube position = {[-2, -2, -2]} size = {[1,1.5,3]} color = {"#6be092"} rotation = {[10,0,0]} />
-                <Cube position = {[-2, 2, -2]} color = {'teal'} />
+                <RotatingCube position = {[-2, 2, -2]} color = {'purple'} />
                 <Sphere position = {[3, -1, -2]} size = {[1.7, 30, 30]} color = {'red'} />
-                <Sphere position = {[3, 2, -2]}/>
+                <Sphere position = {[3, 2, -2]} color = {'pink'}/>
 
                 {/* Following line is equivalent to:
                     const light = new THREE.AmbientLight()
