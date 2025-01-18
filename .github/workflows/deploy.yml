@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'my-portofolio/**'
+      - '.github/**'
 
 jobs:
   deploy:
