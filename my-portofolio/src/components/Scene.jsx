@@ -1,11 +1,13 @@
 import React, {useRef} from 'react';
 import {Canvas, useFrame} from '@react-three/fiber'
 
-function Cube(props){
+//Allows function component to get a ref
+const Cube = React.forwardRef((props, ref) => {
     const {position, size, color, rotation} = props
+    
     return(
         // Mesh holds the geometry and material for a 3D shape
-        <mesh position = {position} rotation={rotation}>
+        <mesh position = {position} rotation={rotation} ref = {ref}>
             {/* Create a new mesh with BoxGeometry and MeshStandardMaterial 
                 Args passes optional arguments to BoxGeometry constructor
                 The attach attribute is used to bind the component either to 
@@ -14,6 +16,20 @@ function Cube(props){
             <boxGeometry args = {size}/>
             <meshStandardMaterial color={color} />
         </mesh>
+    )
+})
+
+function RotatingCube(props){
+    const ref = useRef()
+
+    useFrame ((state, delta) =>{
+        if (ref.current) {
+            ref.current.rotation.x += delta
+        }
+    })
+
+    return(
+        <Cube {...props} ref = {ref}/>
     )
 }
 
@@ -28,12 +44,13 @@ function Sphere(props){
 }
 
 export default function Scene(){
+    
     return(
         // Canvas component sets up a scene and a camera and renders the scene every frame -> No render loop 
         <div id = 'canvas-container'>
         <Canvas>
             <group>
-                <Cube position = {[-2, -2, -2]} size = {[1,1.5,3]} color = {"#6be092"} rotation = {[0,10,0]} />
+                <RotatingCube position = {[-2, -2, -2]} size = {[1,1.5,3]} color = {"#6be092"} rotation = {[0,10,0]} />
                 <Cube position = {[-2, 2, -2]}/>
                 <Sphere position = {[3, -1, -2]} size = {[1.7, 30, 30]} color = {'red'} />
                 <Sphere position = {[3, 2, -2]}/>
