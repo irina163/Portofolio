@@ -34,16 +34,32 @@ function RotatingCube(props){
     )
 }
 
-
-function Sphere(props){
+const Sphere = React.forwardRef((props, ref) => {
     const {position, size, color} = props
     return(
-        <mesh position = {position} >
+        <mesh position = {position} ref = {ref} >
             <sphereGeometry args = {size} />
             <meshStandardMaterial color= {color} />
         </mesh>
     )
+})
+
+function RotatingSphere(props){
+    const ref = useRef()
+
+    useFrame ((state, delta) =>{
+        if (ref.current) {
+            ref.current.rotation.x += 2* delta
+        }
+    })
+
+    return(
+
+        <Sphere {...props} ref = {ref}/>
+    )
+
 }
+
 
 export default function Scene(){
     
@@ -54,8 +70,8 @@ export default function Scene(){
             <group>
                 <RotatingCube position = {[-2, -2, -2]} size = {[1,1.5,3]} color = {"#6be092"} rotation = {[10,0,0]} />
                 <RotatingCube position = {[-2, 2, -2]} color = {'purple'} />
-                <Sphere position = {[3, -1, -2]} size = {[1.7, 30, 30]} color = {'red'} />
-                <Sphere position = {[3, 2, -2]} color = {'pink'}/>
+                <RotatingSphere position = {[3, -1, -2]} size = {[1.7, 30, 30]} color = {'red'} />
+                <RotatingSphere position = {[3, 2, -2]} color = {'pink'}/>
 
                 {/* Following line is equivalent to:
                     const light = new THREE.AmbientLight()
