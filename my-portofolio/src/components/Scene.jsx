@@ -19,7 +19,7 @@ const Cube = React.forwardRef((props, ref) => {
     )
 })
 
-function RotatingShape(props){
+function RotatingCube(props){
     const ref = useRef()
 
     useFrame ((state, delta) =>{
