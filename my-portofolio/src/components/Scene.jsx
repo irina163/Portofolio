@@ -51,7 +51,7 @@ export default function Scene(){
         <Canvas>
             <group>
                 <RotatingCube position = {[-2, -2, -2]} size = {[1,1.5,3]} color = {"#6be092"} rotation = {[0,10,0]} />
-                <Cube position = {[-2, 2, -2]}/>
+                <Cube position = {[-2, 2, -2]} color = {'teal'} />
                 <Sphere position = {[3, -1, -2]} size = {[1.7, 30, 30]} color = {'red'} />
                 <Sphere position = {[3, 2, -2]}/>
 
