@@ -3,6 +3,7 @@ import {useFrame} from '@react-three/fiber'
 import {MeshWobbleMaterial, OrbitControls, useHelper} from '@react-three/drei'
 import { DirectionalLight, DirectionalLightHelper } from 'three';
 import { useControls } from 'leva';
+import {Bell } from './Bell'
 
 //Allows function component to get a ref
 const Cube = React.forwardRef((props, ref) => {
@@ -76,9 +77,12 @@ function RotatingSphere(props){
 
 export default function Scene(){
     const directionalLightRef = useRef()
-    const {lightColor, lightIntensity} = useControls({
+    const {lightColor, lightIntensity, lightPosX, lightPosY, lightPosZ} = useControls('Controls', {
         lightColor : "white",
-        lightIntensity : {value : 0.5, min:0, max:5}
+        lightIntensity : {value : 0.5, min:0, max:5},
+        lightPosX: { value: 6, min: -10, max: 10, step: 0.1 },
+        lightPosY: { value: 3, min: -10, max: 10, step: 0.1 },
+        lightPosZ: { value: 3, min: -10, max: 10, step: 0.1 }
     })
     useHelper(directionalLightRef, DirectionalLightHelper, 0.5, 'white')
     return(
@@ -89,7 +93,7 @@ export default function Scene(){
                 <RotatingCube position = {[-2, 2, -2]} color = {'pink'} />
                 <RotatingSphere position = {[3, -1, -2]} size = {[1.7, 30, 30]} color = {'red'} />
                 <RotatingSphere position = {[3, 2, -2]} color = {'hotpink'}/>
-                <Cube color = "white" />
+                <Bell />
 
 
                 {/* Following line is equivalent to:
@@ -98,7 +102,7 @@ export default function Scene(){
                 in THREE.js. Setting props on Fiber component is like 
                 setting the same-named propoerty on the three.js instance*/}
                 <ambientLight intensity={lightIntensity} />
-                <directionalLight color = {lightColor} position = {[-10,0,10]} ref = {directionalLightRef} castShadows />
+                <directionalLight color = {lightColor} position = {[lightPosX, lightPosY, lightPosZ]} ref = {directionalLightRef} castShadows />
             </group>
         
         <OrbitControls   />
