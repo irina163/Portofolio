@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {Canvas, useFrame} from '@react-three/fiber'
 
 //Allows function component to get a ref
@@ -20,6 +20,9 @@ const Cube = React.forwardRef((props, ref) => {
 })
 
 function RotatingCube(props){
+    //Persist valuess between renders. 
+    //Store a mutable value that does not cause a re-render when updated.
+    //Also, allows to directly access and manipulate the underlying three.js object
     const ref = useRef()
 
     useFrame ((state, delta) =>{
@@ -36,10 +39,17 @@ function RotatingCube(props){
 
 const Sphere = React.forwardRef((props, ref) => {
     const {position, size, color} = props
+
+    const [isHovered, setIsHovered] = useState(false)
     return(
-        <mesh position = {position} ref = {ref} >
+        <mesh position = {position} 
+            ref = {ref} 
+            onPointerEnter={(event) => {
+                event.stopPropagation()
+                setIsHovered(true)}}
+            onPointerLeave={() => setIsHovered(false)}>
             <sphereGeometry args = {size} />
-            <meshStandardMaterial color= {color} />
+            <meshStandardMaterial color = {isHovered ? 'orange': color} wireframe/>
         </mesh>
     )
 })
@@ -71,7 +81,7 @@ export default function Scene(){
                 <RotatingCube position = {[-2, -2, -2]} size = {[1,1.5,3]} color = {"#6be092"} rotation = {[10,0,0]} />
                 <RotatingCube position = {[-2, 2, -2]} color = {'purple'} />
                 <RotatingSphere position = {[3, -1, -2]} size = {[1.7, 30, 30]} color = {'red'} />
-                <RotatingSphere position = {[3, 2, -2]} color = {'pink'}/>
+                <RotatingSphere position = {[3, 2, -2]} color = {'hotpink'}/>
 
                 {/* Following line is equivalent to:
                     const light = new THREE.AmbientLight()
