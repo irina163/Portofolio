@@ -1,9 +1,12 @@
 import React, {useRef, useState} from 'react';
 import {useFrame} from '@react-three/fiber'
-import {MeshWobbleMaterial, OrbitControls, useHelper} from '@react-three/drei'
+import {MeshWobbleMaterial, OrbitControls, useHelper, Box} from '@react-three/drei'
+import { RigidBody} from '@react-three/rapier';
 import { DirectionalLight, DirectionalLightHelper } from 'three';
 import { useControls } from 'leva';
 import {Bell } from './Bell'
+
+
 
 //Allows function component to get a ref
 const Cube = React.forwardRef((props, ref) => {
@@ -36,8 +39,9 @@ function RotatingCube(props){
     })
 
     return(
-
-        <Cube {...props} ref = {ref}/>
+        <RigidBody>
+            <Cube {...props} ref = {ref}/>
+        </RigidBody>
     )
 }
 
@@ -70,7 +74,9 @@ function RotatingSphere(props){
 
     return(
 
-        <Sphere {...props} ref = {ref}/>
+        <RigidBody colliders = 'ball'>
+            <Sphere {...props} ref = {ref}/>
+        </RigidBody>
     )
 
 }
@@ -85,15 +91,39 @@ export default function Scene(){
         lightPosZ: { value: 3, min: -10, max: 10, step: 0.1 }
     })
     useHelper(directionalLightRef, DirectionalLightHelper, 0.5, 'white')
+
+    const [isHovered, setIsHovered] = useState(false)
+    const cube = useRef()
+    function jump(){
+        cube.current.applyImpulse({x:0, y:3, z:0})
+    }
+
     return(
         // Canvas component sets up a scene and a camera and renders the scene every frame -> No render loop 
         <>
             <group>
                 <RotatingCube position = {[-2, -2, -2]} size = {[1,1.5,3]} color = {"#6be092"} rotation = {[10,0,0]} />
                 <RotatingCube position = {[-2, 2, -2]} color = {'pink'} />
-                <RotatingSphere position = {[3, -1, -2]} size = {[1.7, 30, 30]} color = {'red'} />
-                <RotatingSphere position = {[3, 2, -2]} color = {'hotpink'}/>
-                <Bell />
+                <RotatingSphere position = {[3, 1, -2]} size = {[1.7, 30, 30]} color = {'red'} />
+                <RotatingSphere position = {[2.7, 4, -2]} color = {'hotpink'}/>
+                <RigidBody colliders = 'hull'>
+                    <Bell />
+                </RigidBody>
+                
+                {/* Physics engine object. Fixed = won't move, but it will interact in collisions*/}
+                <RigidBody type = "fixed">
+                    <Box position = {[0,-3,0]} args = {[13, 1, 13]} />
+                    <meshStandardMaterial color = 'springgreen' />
+                </RigidBody>
+
+                <RigidBody position = {[-3, -2, 0]} ref = {cube}>
+                    <Box onPointerEnter = { () => setIsHovered(true)}
+                        onPointerLeave = {() => setIsHovered(false)}
+                        onClick = {jump}
+                    >
+                        <meshStandardMaterial color = {isHovered ? 'orange': 'royalblue'} />
+                    </Box>
+                </RigidBody>
 
 
                 {/* Following line is equivalent to:

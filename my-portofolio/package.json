@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-three/drei": "^9.121.2",
     "@react-three/fiber": "^8.17.12",
+    "@react-three/rapier": "^1.5.0",
     "@types/three": "^0.156.0",
     "leva": "^0.9.35",
     "react": "^18.3.1",
@@ -30,7 +31,6 @@
     "globals": "^15.14.0",
     "vite": "^6.0.5"
   },
-
   "_comment0": "Temporary fix for Leva color-picker issue. https://github.com/pmndrs/leva/issues/508",
   "overrides": {
     "leva": {
