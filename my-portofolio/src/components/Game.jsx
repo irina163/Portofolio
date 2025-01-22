@@ -13,13 +13,14 @@ export function Game(){
     const [start, setStart] = useState(false)
 
     function jump(){
-        cube.current.applyImpulse({x:0, y:3, z:0})
+        if(isOnFloor.current){
+            cube.current.applyImpulse({x:0, y:3, z:0})
+        }
     }
 
     const jumpPressed = useKeyboardControls((state) => state[Controls.jump])
 
     useFrame ((_state, delta) =>{
-
         if(jumpPressed){
             jump()
         }
@@ -40,17 +41,29 @@ export function Game(){
         kicker.current.setNextKinematicRotation(currRotation)
     })
 
+    const isOnFloor = useRef(true)
+
     return(
         <group position = {[-5,0,-13]}>
         {/* Floor */}
-        <RigidBody type = "fixed">
+        <RigidBody type = "fixed" name = 'floor'>
             <Box  args = {[13, 1, 13]} >
             <meshStandardMaterial color = 'springgreen' />
             </Box>
         </RigidBody>
 
         {/* Cube */}
-        <RigidBody position = {[-3, 0, 0]} ref = {cube}>
+        <RigidBody position = {[-3, 0, 0]} ref = {cube} gravityScale={2.5}
+        onCollisionEnter={(other) =>{
+            if (other.rigidBodyObject.name === 'floor'){
+                isOnFloor.current = true
+            }
+        }}
+        onCollisionExit={(other) =>{
+            if (other.rigidBodyObject.name === 'floor'){
+                isOnFloor.current = false
+            }
+        }}>
             <Box onPointerEnter = { () => setIsHovered(true)}
                 onPointerLeave = {() => setIsHovered(false)}
                 onClick = {() => setStart(true)}
