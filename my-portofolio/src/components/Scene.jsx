@@ -99,24 +99,24 @@ export default function Scene(){
     }
 
     return(
-        // Canvas component sets up a scene and a camera and renders the scene every frame -> No render loop 
         <>
-            <group>
-                <RotatingCube position = {[-2, -2, -2]} size = {[1,1.5,3]} color = {"#6be092"} rotation = {[10,0,0]} />
-                <RotatingCube position = {[-2, 2, -2]} color = {'pink'} />
-                <RotatingSphere position = {[3, 1, -2]} size = {[1.7, 30, 30]} color = {'red'} />
-                <RotatingSphere position = {[2.7, 4, -2]} color = {'hotpink'}/>
+            <group position = {[0,-3,0]}>
+                <RotatingCube position = {[-2, 1, -2]} size = {[1,1.5,3]} color = {"#6be092"} rotation = {[10,0,0]} />
+                <RotatingCube position = {[-2, 5, -2]} color = {'pink'} />
+                <RotatingSphere position = {[3, 4, -2]} size = {[1.7, 30, 30]} color = {'red'} />
+                <RotatingSphere position = {[2.7, 7, -2]} color = {'hotpink'}/>
                 <RigidBody colliders = 'hull'>
                     <Bell />
                 </RigidBody>
                 
                 {/* Physics engine object. Fixed = won't move, but it will interact in collisions*/}
                 <RigidBody type = "fixed">
-                    <Box position = {[0,-3,0]} args = {[13, 1, 13]} />
-                    <meshStandardMaterial color = 'springgreen' />
+                    <Box args = {[13, 1, 13]} >
+                    <meshStandardMaterial color = 'beige' />
+                    </Box>
                 </RigidBody>
 
-                <RigidBody position = {[-3, -2, 0]} ref = {cube}>
+                <RigidBody position = {[-3, 0, 0]} ref = {cube}>
                     <Box onPointerEnter = { () => setIsHovered(true)}
                         onPointerLeave = {() => setIsHovered(false)}
                         onClick = {jump}
@@ -124,6 +124,8 @@ export default function Scene(){
                         <meshStandardMaterial color = {isHovered ? 'orange': 'royalblue'} />
                     </Box>
                 </RigidBody>
+            
+            </group>
 
 
                 {/* Following line is equivalent to:
@@ -133,10 +135,8 @@ export default function Scene(){
                 setting the same-named propoerty on the three.js instance*/}
                 <ambientLight intensity={lightIntensity} />
                 <directionalLight color = {lightColor} position = {[lightPosX, lightPosY, lightPosZ]} ref = {directionalLightRef} castShadows />
-            </group>
-        
+
         <OrbitControls   />
         </>
-
     )
 }
