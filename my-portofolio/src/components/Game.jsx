@@ -1,8 +1,9 @@
-import { Box } from "@react-three/drei";
+import { Box, useKeyboardControls } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { quat, RigidBody } from "@react-three/rapier";
 import { useState, useRef} from "react";
 import * as THREE from "three";
+import { Controls } from "../App";
 
 export function Game(){
     const [isHovered, setIsHovered] = useState()
@@ -15,7 +16,14 @@ export function Game(){
         cube.current.applyImpulse({x:0, y:3, z:0})
     }
 
+    const jumpPressed = useKeyboardControls((state) => state[Controls.jump])
+
     useFrame ((_state, delta) =>{
+
+        if(jumpPressed){
+            jump()
+        }
+
         if(!start)
             return
         //Quaternions are weird numbers of the form a + bi + cj + dk with 1, i, j, k eing bais vectors. 
