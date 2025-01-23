@@ -127,7 +127,6 @@ export default function Scene(){
             
             </group>
 
-
                 {/* Following line is equivalent to:
                     const light = new THREE.AmbientLight()
                     light.intensity = 0.1 
