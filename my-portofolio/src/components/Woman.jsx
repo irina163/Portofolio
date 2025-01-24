@@ -11,7 +11,7 @@ import { useEffect } from 'react'
 
 export default function Woman (props) {
   const group = React.useRef()
-  const { scene, animations } = useGLTF('./public/models/woman.gltf')
+  const { scene, animations } = useGLTF('./models/woman.gltf')
   const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene])
   const { nodes, materials } = useGraph(clone)
   const { actions, names } = useAnimations(animations, group)
