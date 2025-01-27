@@ -3,10 +3,11 @@ import { Canvas } from '@react-three/fiber'
 import {Physics} from '@react-three/rapier'
 import Scene from './components/Scene.jsx'
 import {Game} from './components/Game.jsx'
-import {Character} from './components/Character_Animation.jsx'
+import {Character} from './components/Character.jsx'
 import { Suspense, useMemo } from 'react'
 import { useControls } from 'leva';
 import { KeyboardControls, Html } from '@react-three/drei'
+import Interface from './components/Interface.jsx'
 
 export const Controls = {
   jump : 'jump'
@@ -35,6 +36,7 @@ function App() {
             </Physics>
           </Suspense>
         </Canvas>
+        <Interface/>
       </KeyboardControls>
     )
 }

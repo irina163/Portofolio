@@ -8,6 +8,7 @@ import { useGraph } from '@react-three/fiber'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { SkeletonUtils } from 'three-stdlib'
 import { useEffect } from 'react'
+import { useCharacterAnimations } from '../contexts/AnimationContext'
 
 export default function Woman (props) {
   const group = React.useRef()
@@ -16,8 +17,15 @@ export default function Woman (props) {
   const { nodes, materials } = useGraph(clone)
   const { actions, names } = useAnimations(animations, group)
 
+  const {setAnimations} = useCharacterAnimations()
+
+  //The useEffect Hook allows you to perform side effects in your components.
+  useEffect(() => {
+    setAnimations(names)
+  }, [names])
+
   useEffect(()=>{
-    actions[names[0]].reset().fadeIn(0.5).play()
+    actions[names[1]].reset().fadeIn(0.5).play()
   }, [])
 
   return (
