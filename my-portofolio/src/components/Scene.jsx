@@ -100,7 +100,7 @@ export default function Scene(){
 
     return(
         <>
-            <group position = {[0,-3,0]}>
+            <group position = {[-15,0,15]}>
                 <RotatingCube position = {[-2, 1, -2]} size = {[1,1.5,3]} color = {"#6be092"} rotation = {[10,0,0]} />
                 <RotatingCube position = {[-2, 5, -2]} color = {'pink'} />
                 <RotatingSphere position = {[3, 4, -2]} size = {[1.7, 30, 30]} color = {'red'} />

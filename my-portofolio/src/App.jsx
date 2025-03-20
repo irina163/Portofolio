@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber'
 import {Physics} from '@react-three/rapier'
 import Scene from './components/Scene.jsx'
 import {Game} from './components/Game.jsx'
+import {Maze, generateMaze} from './components/Maze.jsx'
 import {Character} from './components/Character.jsx'
 import { Suspense, useMemo } from 'react'
 import { useControls } from 'leva';
@@ -12,6 +13,8 @@ import Interface from './components/Interface.jsx'
 export const Controls = {
   jump : 'jump'
 }
+
+const maze = generateMaze(10, 10);
 
 function App() {
 
@@ -33,6 +36,7 @@ function App() {
               <Scene />
               <Game />
               <Character />
+              <Maze maze={maze} />
             </Physics>
           </Suspense>
         </Canvas>
