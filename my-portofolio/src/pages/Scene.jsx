@@ -1,13 +1,8 @@
 import React, {useRef, useState} from 'react';
 import {useFrame} from '@react-three/fiber'
-import {MeshWobbleMaterial, OrbitControls, useHelper, Box} from '@react-three/drei'
-import { RigidBody, Physics} from '@react-three/rapier';
-import { DirectionalLight, DirectionalLightHelper } from 'three';
-import { useControls } from 'leva';
+import {MeshWobbleMaterial, Box} from '@react-three/drei'
+import { RigidBody} from '@react-three/rapier';
 import {Bell } from '../components/Bell'
-
-
-import { Link } from 'react-router-dom';
 
 //Allows function component to get a ref
 const Cube = React.forwardRef((props, ref) => {
@@ -79,20 +74,9 @@ function RotatingSphere(props){
             <Sphere {...props} ref = {ref}/>
         </RigidBody>
     )
-
 }
 
 export default function Scene(){
-
-    const directionalLightRef = useRef()
-    const {lightColor, lightIntensity, lightPosX, lightPosY, lightPosZ} = useControls('Controls', {
-        lightColor : "white",
-        lightIntensity : {value : 0.5, min:0, max:5},
-        lightPosX: { value: 6, min: -10, max: 10, step: 0.1 },
-        lightPosY: { value: 3, min: -10, max: 10, step: 0.1 },
-        lightPosZ: { value: 3, min: -10, max: 10, step: 0.1 }
-    })
-    useHelper(directionalLightRef, DirectionalLightHelper, 0.5, 'white')
 
     const [isHovered, setIsHovered] = useState(false)
     const cube = useRef()
@@ -125,16 +109,6 @@ export default function Scene(){
                     <meshStandardMaterial color = {isHovered ? 'orange': 'royalblue'} />
                 </Box>
             </RigidBody>
-        
-
-            {/* Following line is equivalent to:
-                const light = new THREE.AmbientLight()
-                light.intensity = 0.1 
-            in THREE.js. Setting props on Fiber component is like 
-            setting the same-named propoerty on the three.js instance*/}
-            <ambientLight intensity={lightIntensity} />
-            <directionalLight color = {lightColor} position = {[lightPosX, lightPosY, lightPosZ]} ref = {directionalLightRef} castShadows />
-
         </>
     )
 }
