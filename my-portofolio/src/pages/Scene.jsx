@@ -1,12 +1,13 @@
 import React, {useRef, useState} from 'react';
 import {useFrame} from '@react-three/fiber'
 import {MeshWobbleMaterial, OrbitControls, useHelper, Box} from '@react-three/drei'
-import { RigidBody} from '@react-three/rapier';
+import { RigidBody, Physics} from '@react-three/rapier';
 import { DirectionalLight, DirectionalLightHelper } from 'three';
 import { useControls } from 'leva';
-import {Bell } from './Bell'
+import {Bell } from '../components/Bell'
 
 
+import { Link } from 'react-router-dom';
 
 //Allows function component to get a ref
 const Cube = React.forwardRef((props, ref) => {
@@ -82,6 +83,7 @@ function RotatingSphere(props){
 }
 
 export default function Scene(){
+
     const directionalLightRef = useRef()
     const {lightColor, lightIntensity, lightPosX, lightPosY, lightPosZ} = useControls('Controls', {
         lightColor : "white",
@@ -100,42 +102,39 @@ export default function Scene(){
 
     return(
         <>
-            <group position = {[-15,0,15]}>
-                <RotatingCube position = {[-2, 1, -2]} size = {[1,1.5,3]} color = {"#6be092"} rotation = {[10,0,0]} />
-                <RotatingCube position = {[-2, 5, -2]} color = {'pink'} />
-                <RotatingSphere position = {[3, 4, -2]} size = {[1.7, 30, 30]} color = {'red'} />
-                <RotatingSphere position = {[2.7, 7, -2]} color = {'hotpink'}/>
-                <RigidBody colliders = 'hull'>
-                    <Bell />
-                </RigidBody>
-                
-                {/* Physics engine object. Fixed = won't move, but it will interact in collisions*/}
-                <RigidBody type = "fixed">
-                    <Box args = {[13, 1, 13]} >
-                    <meshStandardMaterial color = 'beige' />
-                    </Box>
-                </RigidBody>
-
-                <RigidBody position = {[-3, 0, 0]} ref = {cube}>
-                    <Box onPointerEnter = { () => setIsHovered(true)}
-                        onPointerLeave = {() => setIsHovered(false)}
-                        onClick = {jump}
-                    >
-                        <meshStandardMaterial color = {isHovered ? 'orange': 'royalblue'} />
-                    </Box>
-                </RigidBody>
+            <RotatingCube position = {[-2, 1, -2]} size = {[1,1.5,3]} color = {"#6be092"} rotation = {[10,0,0]} />
+            <RotatingCube position = {[-2, 5, -2]} color = {'pink'} />
+            <RotatingSphere position = {[3, 4, -2]} size = {[1.7, 30, 30]} color = {'red'} />
+            <RotatingSphere position = {[2.7, 7, -2]} color = {'hotpink'}/>
+            <RigidBody colliders = 'hull'>
+                <Bell />
+            </RigidBody>
             
-            </group>
+            {/* Physics engine object. Fixed = won't move, but it will interact in collisions*/}
+            <RigidBody type = "fixed">
+                <Box args = {[13, 1, 13]} >
+                <meshStandardMaterial color = 'beige' />
+                </Box>
+            </RigidBody>
 
-                {/* Following line is equivalent to:
-                    const light = new THREE.AmbientLight()
-                    light.intensity = 0.1 
-                in THREE.js. Setting props on Fiber component is like 
-                setting the same-named propoerty on the three.js instance*/}
-                <ambientLight intensity={lightIntensity} />
-                <directionalLight color = {lightColor} position = {[lightPosX, lightPosY, lightPosZ]} ref = {directionalLightRef} castShadows />
+            <RigidBody position = {[-3, 0, 0]} ref = {cube}>
+                <Box onPointerEnter = { () => setIsHovered(true)}
+                    onPointerLeave = {() => setIsHovered(false)}
+                    onClick = {jump}
+                >
+                    <meshStandardMaterial color = {isHovered ? 'orange': 'royalblue'} />
+                </Box>
+            </RigidBody>
+        
 
-        <OrbitControls   />
+            {/* Following line is equivalent to:
+                const light = new THREE.AmbientLight()
+                light.intensity = 0.1 
+            in THREE.js. Setting props on Fiber component is like 
+            setting the same-named propoerty on the three.js instance*/}
+            <ambientLight intensity={lightIntensity} />
+            <directionalLight color = {lightColor} position = {[lightPosX, lightPosY, lightPosZ]} ref = {directionalLightRef} castShadows />
+
         </>
     )
 }

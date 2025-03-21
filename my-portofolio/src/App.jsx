@@ -1,14 +1,16 @@
 import './App.css'
 import { Canvas } from '@react-three/fiber'
-import {Physics} from '@react-three/rapier'
-import Scene from './components/Scene.jsx'
+import Scene from './pages/Scene.jsx'
 import {Game} from './components/Game.jsx'
-import {Maze, generateMaze} from './components/Maze.jsx'
-import {Character} from './components/Character.jsx'
+import {Maze, generateMaze} from './pages/Maze.jsx'
+import Character from './pages/Character.jsx'
 import { Suspense, useMemo } from 'react'
 import { useControls } from 'leva';
-import { KeyboardControls, Html } from '@react-three/drei'
-import Interface from './components/Interface.jsx'
+import { Html, OrbitControls } from '@react-three/drei'
+
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Layout from "./pages/Layout";
+import { Physics } from '@react-three/rapier'
 
 export const Controls = {
   jump : 'jump'
@@ -28,20 +30,25 @@ function App() {
     debug:false
   })
     return (
-      <KeyboardControls map = {map}>
-        {/* Canvas component sets up a scene and a camera and renders the scene every frame -> No render loop  */}
-        <Canvas shadows>
+      <Router> {/* Place Router outside of the Canvas */}
+      <Layout/>
+      <div>
+        <Canvas>
           <Suspense fallback = {<Loading />}>
-            <Physics debug = {debug} gravity = {[0,-1,0]}>
-              <Scene />
-              <Game />
-              <Character />
-              <Maze maze={maze} />
+            <Physics debug={debug} gravity={[0, -1, 0]}>
+              <Routes>
+                <Route exact path="/" element={ <Scene />} />
+                <Route path="/character" element={<Character />} />
+                <Route path="/maze" element={<Maze maze = {maze}/>} />
+              </Routes>
+              
             </Physics>
           </Suspense>
+          <OrbitControls />
         </Canvas>
-        <Interface/>
-      </KeyboardControls>
+      </div>
+    </Router>
+
     )
 }
 

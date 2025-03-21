@@ -8,3 +8,38 @@
 body{
     background-color: black;
 }
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px;
+    width: 100%;
+    z-index: 10; /* Ensure it stays on top of other content */
+    height: 30px;
+  }
+
+nav ul {
+display: flex;
+justify-content: space-around;
+list-style: none;
+}
+
+nav a {
+color: white;
+text-decoration: none;
+}
+
+nav a:hover {
+text-decoration: underline;
+}
+
+canvas {
+    position: absolute; /* Position it absolutely */
+    top: 60px; /* Adjust to account for the nav height */
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
