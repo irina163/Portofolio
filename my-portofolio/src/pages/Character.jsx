@@ -1,5 +1,7 @@
 import { RigidBody} from "@react-three/rapier";
 import Woman from "../components/Woman";
+import Irina from "../components/Irina.jsx";
+import Irina2 from "../components/Irina.jsx";
 import {Box} from '@react-three/drei'
 
 export default function Character(){
@@ -12,6 +14,7 @@ export default function Character(){
                 </Box>
             </RigidBody>
             <Woman position = {[0,0.5,0]}/>
+            <Irina position = {[1,0.5,1]}/>
         </>
     )
 }
