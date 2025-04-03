@@ -1,13 +1,12 @@
 import './App.css'
-import React, {useRef, Suspense, useMemo} from 'react';
+import React, {useRef, Suspense, useMemo, useState} from 'react';
 import { DirectionalLightHelper } from 'three';
 import { useControls } from 'leva';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import { Canvas } from '@react-three/fiber'
-import { Html, OrbitControls, useHelper } from '@react-three/drei'
+import { Html, OrbitControls, useHelper, Text } from '@react-three/drei'
 import { Physics } from '@react-three/rapier'
 
-import Scene from './pages/Scene.jsx'
 import {Maze, generateMaze} from './pages/Maze.jsx'
 import Character from './pages/Character.jsx'
 import Layout from "./pages/Layout";
@@ -35,6 +34,17 @@ function LightSetup ({ lightColor, lightIntensity, lightPosX, lightPosY, lightPo
   )
 }
 
+const TextOverlay = ({ text }) => {
+  const location = useLocation();
+  if (location.pathname === "/") {
+    text = (<>Hello! My name is Irina, and I am a Computer Science graduate.<br/>I'm building this website to showcase my coding knowledge, and to practice graphics.</>);}
+  return (
+    <div className="text-overlay">
+      {text}
+    </div>
+  );
+};
+
 export default function App() {
   //Returns a memoized value. Only runs when a dependency updates
   //const cachedValue = useMemo(calculateValue(function), dependencies)
@@ -47,36 +57,37 @@ export default function App() {
     debug:false
   })
 
-  const {lightColor, lightIntensity, lightPosX, lightPosY, lightPosZ} = useControls('Controls', {
-    lightColor : "white",
-    lightIntensity : {value : 0.5, min:0, max:5},
-    lightPosX: { value: 6, min: -10, max: 10, step: 0.1 },
-    lightPosY: { value: 3, min: -10, max: 10, step: 0.1 },
-    lightPosZ: { value: 3, min: -10, max: 10, step: 0.1 }
+  const {color, intensity, posX, posY, posZ} = useControls('Controls', {
+    color : "white",
+    intensity : {value : 0.5, min:0, max:5},
+    posX: { value: 6, min: -10, max: 10, step: 0.1 },
+    posY: { value: 3, min: -10, max: 10, step: 0.1 },
+    posZ: { value: 3, min: -10, max: 10, step: 0.1 }
 })
 
     return (
       <Router>
       <Layout/>
-      <div>
+      <div style={{ position: 'relative' }}>
+        
+      <TextOverlay />
         <Canvas>
           <Suspense fallback = {<Loading />}>
             <Physics debug={debug} gravity={[0, -1, 0]}>
               <Routes>
-                <Route exact path="/" element={ <Scene />} />
-                <Route path="/character" element={<Character />} />
-                <Route path="/maze" element={<Maze maze = {maze}/>} />
+                <Route path="/" element={<Character />}/>
+                <Route path="/maze" element={<Maze maze = {maze}/>}/>
               </Routes>
               
             </Physics>
           </Suspense>
 
           <LightSetup
-            lightColor={lightColor}
-            lightIntensity={lightIntensity}
-            lightPosX={lightPosX}
-            lightPosY={lightPosY}
-            lightPosZ={lightPosZ}
+            lightColor={color}
+            lightIntensity={intensity}
+            lightPosX={posX}
+            lightPosY={posY}
+            lightPosZ={posZ}
           />
           <OrbitControls />
         </Canvas>
